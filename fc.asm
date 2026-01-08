@@ -10,10 +10,13 @@ newline macro
 endm
 
 err macro s 
+    push ax         ; Save AX (contains error code)
     mov dx, offset s 
     mov ah, 9
     int 21h
     
+    pop ax          ; Restore error code. This was necessary because
+                    ; DOS.PrintString function 09h does clobber the AL register.
     ; Print the error code in AX as a character (decimal).
     mov dl, al      ; Get the low byte of AX.
     add dl, '0'     ; Convert to ASCII
