@@ -21,13 +21,7 @@ err macro s
     int 21h
 endm
 
-prompt macro s
-    mov dx, offset s 
-    mov ah, 9
-    int 21h
-endm
-
-info macro s
+string macro s
     mov dx, offset s 
     mov ah, 9
     int 21h
@@ -60,7 +54,7 @@ main proc
     mov ax, @data
     mov ds, ax
 
-    prompt prompt1
+    string prompt1
     mov si, offset f1
     ; --- Input the filenames. ---
 read:
@@ -72,7 +66,7 @@ read:
     jmp read
 
 next:
-    prompt prompt2
+    string prompt2
     mov si, offset f2
     
 read2:
@@ -173,11 +167,11 @@ eof1_set:
     jmp files_not_equal
 
 files_equal:
-    info eq_msg
+    string eq_msg
     jmp cleanup
 
 files_not_equal:
-    info neq_msg
+    string neq_msg
     jmp cleanup
 
 read_error:
